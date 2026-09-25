@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+
+# Environment
+.env
+
+# Data (large files — fetch via scripts, don't commit)
+data/
+!data/**/.gitkeep
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Generated showcase/test outputs
+showcase/
+test_*.png
+outputs/
+
+# UV lock
+uv.lock
+.private-tmp/

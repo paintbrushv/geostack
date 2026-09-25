@@ -1,0 +1,121 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "geostack"
+version = "0.1.0"
+description = "Shared geospatial analytics library for CRE analysis"
+requires-python = ">=3.11"
+dependencies = [
+    # Spatial
+    "geopandas>=1.0.0",
+    "shapely>=2.0.0",
+    "pyproj>=3.6.0",
+    # Database
+    "sqlalchemy>=2.0.0",
+    "geoalchemy2>=0.14.0",
+    "psycopg2-binary>=2.9.0",
+    # Data
+    "pandas>=2.0.0",
+    "pyarrow>=14.0.0",
+    "requests>=2.31.0",
+    # Submarket clustering (imported at module level by geostack.submarkets)
+    "scikit-learn>=1.3.0",
+    # Config
+    "python-dotenv>=1.0.0",
+    "pyyaml>=6.0.0",
+    "click>=8.1.0",
+    "rich>=13.0.0",
+]
+
+[project.optional-dependencies]
+viz = [
+    "folium>=0.15.0",
+    "matplotlib>=3.8.0",
+    "mapclassify>=2.6.0",
+]
+routing = [
+    "osmnx>=1.9.0",
+]
+tiles = [
+    "freestiler>=0.1.0",
+    "maplibre>=0.3.0",
+]
+analytics = [
+    "duckdb>=0.10.0",
+]
+notebooks = [
+    "jupyter>=1.0.0",
+    "ipywidgets>=8.0.0",
+]
+census = [
+    "census>=0.8.0",
+    "us>=3.0.0",
+]
+# --- Walker-ecosystem upgrades (alongside existing modules) ---
+census-walker = [
+    "pygris>=0.1.6",
+    "censusdis>=1.1.0",
+]
+routing-multi = [
+    "routingpy>=1.0.0",
+]
+maplibre-interactive = [
+    "maplibre>=0.3.0",
+]
+print-maps = [
+    "matplotlib>=3.8.0",
+    "contextily>=1.5.0",
+    "mapclassify>=2.6.0",
+]
+# MSA gravity: node detection (DBSCAN + density-surface peaks) and contour maps
+gravity = [
+    "scikit-learn>=1.3.0",
+    "scipy>=1.11.0",
+    "matplotlib>=3.8.0",
+    "contextily>=1.5.0",
+]
+# H3 hexagonal grid layers (areal interpolation + choropleths) — reusable
+# spatial-fusion primitive for downstream repos.
+h3 = [
+    "h3>=4.0.0",
+    "matplotlib>=3.8.0",
+    "contextily>=1.5.0",
+    "mapclassify>=2.6.0",
+]
+# Browser-driven CAD scraping (True Prodigy source). Run `playwright install
+# chromium` once after install.
+cad-scrape = [
+    "playwright>=1.40.0",
+]
+# --- End Walker-ecosystem upgrades ---
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.1.0",
+    "black>=24.0.0",
+    # Test-suite imports (matplotlib is imported at module level by several tests)
+    "matplotlib>=3.8.0",
+]
+all = [
+    "geostack[viz,routing,tiles,analytics,notebooks,census,dev]",
+    "geostack[census-walker,routing-multi,maplibre-interactive,print-maps,gravity,h3,cad-scrape]",
+]
+
+[project.scripts]
+geostack = "geostack.cli:cli"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: marks tests that require live DB or network access (deselect with -m 'not integration')",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
