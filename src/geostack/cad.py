@@ -1565,8 +1565,13 @@ def _trueprodigy_capture_auth(portal_url: str, seed_term: str = "76240", headles
             except Exception:
                 cap["body"] = {}
 
+    # Hosts without a bundled Playwright browser (e.g. an OS Playwright won't
+    # download for) point at a system Chromium. NPL_CHROMIUM_PATH is what npl's
+    # cron already exports; unset means the default bundled browser.
+    executable_path = (os.environ.get("GEOSTACK_CHROMIUM_PATH")
+                       or os.environ.get("NPL_CHROMIUM_PATH") or None)
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=headless)
+        browser = p.chromium.launch(headless=headless, executable_path=executable_path)
         page = browser.new_page()
         page.on("request", on_request)
         console.print(f"[dim]True Prodigy: loading {portal_url}...[/dim]")
