@@ -89,6 +89,12 @@ h3 = [
 cad-scrape = [
     "playwright>=1.40.0",
 ]
+# Publishable static exhibits (scripts/build_supply_exhibits.py) — the OMB
+# delineation file is .xlsx, hence openpyxl.
+exhibits = [
+    "matplotlib>=3.8.0",
+    "openpyxl>=3.1.0",
+]
 # --- End Walker-ecosystem upgrades ---
 dev = [
     "pytest>=8.0.0",
